@@ -1,0 +1,12 @@
+{
+  "helloWorld": "أهلا يا عالم",
+  "qstMark": "؟",
+  "confirmNotification":"هل تأكد عملية الشراء",
+  "currency": "دج",
+  "totalNotification": "ذات المبلغ",
+  "sourceNotification": "عند",
+  "minuteUnit": "د",
+  "hourUnit": "سا",
+  "dayUnit": "ي",
+  "weekUnit": "أس"
+}

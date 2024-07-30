@@ -55,16 +55,31 @@ class _NavbarIconState extends State<NavbarIcon> {
                     ),
                   ],
                 ),
-                child: SvgPicture.asset(
-                  // Icon Path
-                  widget.path,
-                  semanticsLabel: widget.label,
-                  colorFilter: ColorFilter.mode(
-                    widget.index == widget.selected
-                        ? Palette.darkMain
-                        : Palette.disabledColor,
-                    BlendMode.srcIn,
-                  ),
+                child: Stack(
+                  children: [
+                    SvgPicture.asset(
+                      // Icon Path
+                      widget.path,
+                      semanticsLabel: widget.label,
+                      colorFilter: ColorFilter.mode(
+                        Palette.disabledColor,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    AnimatedOpacity(
+                      opacity: widget.index == widget.selected ? 1 : 0,
+                      duration: Palette.mediumAnimation,
+                      child: SvgPicture.asset(
+                        // Icon Path
+                        widget.path,
+                        semanticsLabel: widget.label,
+                        colorFilter: ColorFilter.mode(
+                          Palette.darkMain,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

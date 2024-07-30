@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:code/Components/navbar_icon.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:flutter/material.dart';
@@ -5,14 +7,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomNavigationBar extends StatefulWidget {
-  const CustomNavigationBar({super.key});
+  CustomNavigationBar(
+      {required this.selectedIndex, required this.animateToPage, super.key});
+
+  int selectedIndex;
+  final void Function(int, int) animateToPage;
 
   @override
   State<CustomNavigationBar> createState() => _CustomNavigationBarState();
 }
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
-  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -41,45 +46,40 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   path: "lib/Assets/Icons/Map.svg",
                   index: 0,
                   label: "Home",
-                  selected: _selectedIndex,
+                  selected: widget.selectedIndex,
                   onTap: () {
-                    setState(() {
-                      _selectedIndex = 0;
-                    });
+                    widget.animateToPage(0, widget.selectedIndex);
                   },
                 ),
+                // Notifications
                 NavbarIcon(
                   path: "lib/Assets/Icons/Notification.svg",
                   index: 1,
                   label: "Notifications",
-                  selected: _selectedIndex,
+                  selected: widget.selectedIndex,
                   onTap: () {
-                    setState(() {
-                      _selectedIndex = 1;
-                    });
+                    widget.animateToPage(1, widget.selectedIndex);
                   },
                 ),
                 const Spacer(),
+                // Reminder
                 NavbarIcon(
                   path: "lib/Assets/Icons/Alarm.svg",
                   index: 2,
                   label: "Reminder",
-                  selected: _selectedIndex,
+                  selected: widget.selectedIndex,
                   onTap: () {
-                    setState(() {
-                      _selectedIndex = 2;
-                    });
+                    widget.animateToPage(2, widget.selectedIndex);
                   },
                 ),
+                // Settings
                 NavbarIcon(
                   path: "lib/Assets/Icons/Account.svg",
                   index: 3,
                   label: "Settings",
-                  selected: _selectedIndex,
+                  selected: widget.selectedIndex,
                   onTap: () {
-                    setState(() {
-                      _selectedIndex = 3;
-                    });
+                    widget.animateToPage(3, widget.selectedIndex);
                   },
                 ),
               ],

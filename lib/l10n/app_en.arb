@@ -1,0 +1,12 @@
+{
+  "helloWorld": "Hello World!",
+  "qstMark": "?",
+  "confirmNotification":"Do you confirm the purchase",
+  "currency": "DA",
+  "totalNotification": "of",
+  "sourceNotification": "from",
+  "minuteUnit": "m",
+  "hourUnit": "h",
+  "dayUnit": "d",
+  "weekUnit": "w"
+}
