@@ -1,5 +1,6 @@
 {
-  "helloWorld": "أهلا يا عالم",
+  "or": "أو",
+  "and": "و",
   "qstMark": "؟",
   "confirmNotification":"هل تأكد عملية الشراء",
   "currency": "دج",
@@ -8,5 +9,22 @@
   "minuteUnit": "د",
   "hourUnit": "سا",
   "dayUnit": "ي",
-  "weekUnit": "أس"
+  "weekUnit": "أس",
+  "noAccount": "ليس لديك حساب؟",
+  "haveAccount": "تملك حساب مسبقاً؟",
+  "signUp": "اِفتح حساباً",
+  "logIn": "سجّل الدّخول",
+  "password": "كلمة السّر",
+  "forgotPassword": "نسيت كلمة السّر؟",
+  "fname": "الاِسم",
+  "lname": "اللّقب",
+  "phone": "رقم الهاتف",
+  "email": "البريد الاِلكتروني",
+  "confirmPass": "تأكيد كلمة السّر",
+  "byCreating": "عند إنشاء حساب، فإنك توافق على",
+  "terms": "شروط الخدمة",
+  "policy": "سياسة الخصوصية",
+  "selectCountry": "اِختار دولتك",
+  "countries": "الجزائر;فرنسا",
+  "end": " "
 }

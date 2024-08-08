@@ -1,8 +1,10 @@
 import 'package:code/Models/instructions_object.dart';
+import 'package:code/Models/phone_local.dart';
 import 'package:code/Models/transaction_object.dart';
 
 class FakeData {
   static Map userInfo = {
+    "uid": "QSD5qs65zsxdcsq",
     "firstName": "FirstName",
     "lastName": "LastName",
     "gender": "Male",
@@ -10,6 +12,7 @@ class FakeData {
     "pictureUrl": "url.com",
     "email": "email@adress.com",
     "phoneNumber": "213;784397078",
+    "token": "2525GGDI23551ZXX0001",
   };
 
   static Map<String, InstructionsObj?> instructions = {
@@ -53,5 +56,16 @@ class FakeData {
       "timestamp": "21-07-2024 10:00:00.000",
       "openedAt": "21-07-2024 10:15:53.000",
     }, instructions),
+  ];
+
+  static List<PhoneLocal> supportedLocales = [
+    PhoneLocal(
+        countryCode: 213,
+        countryLocal: "dz",
+        flagPath: "lib/Assets/Vectors/dz.svg"),
+    PhoneLocal(
+        countryCode: 33,
+        countryLocal: "fr",
+        flagPath: "lib/Assets/Vectors/fr.svg"),
   ];
 }

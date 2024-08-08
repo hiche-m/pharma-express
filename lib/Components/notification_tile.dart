@@ -15,6 +15,7 @@ class NotificationTile extends StatefulWidget {
 }
 
 class _NotificationTileState extends State<NotificationTile> {
+  bool test = true;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -28,6 +29,7 @@ class _NotificationTileState extends State<NotificationTile> {
                 style: TextStyle(
                   fontSize: 16.sp,
                   height: 1.2,
+                  color: Palette.textColor,
                 ),
                 children: [
                   TextSpan(
@@ -76,14 +78,23 @@ class _NotificationTileState extends State<NotificationTile> {
           ),
           Row(
             children: [
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Palette.secoundaryText,
-                    decoration: TextDecoration.underline,
+              AnimatedScale(
+                duration: const Duration(milliseconds: 250),
+                scale: test ? 1 : 0,
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      test = false;
+                    });
+                  },
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Palette.secoundaryText,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ),

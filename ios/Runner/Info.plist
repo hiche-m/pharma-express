@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Pharma Express uses location services only when it's running.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Pharma Express uses the device camera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pharma Express accesses the user's photo library to display photos.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

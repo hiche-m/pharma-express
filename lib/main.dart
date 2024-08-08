@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MaterialApp(
       title: 'Pharma Express',
@@ -23,6 +24,7 @@ void main() {
       ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Palette.mainColor),
+        textTheme: Palette.getDefaultTextTheme(),
         useMaterial3: true,
         /* fontFamily: "Zain", */
       ),

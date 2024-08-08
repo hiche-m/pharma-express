@@ -1,7 +1,6 @@
 import 'package:code/Components/navigation_bar.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/home_view_model.dart';
-import 'package:code/Views/camera_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,19 +12,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void loadScreen() async {
-    await Future.delayed(const Duration(seconds: 1));
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => const CameraView(),
-    ));
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    loadScreen();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

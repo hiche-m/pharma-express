@@ -2,6 +2,7 @@ import 'package:code/Models/phone_number.dart';
 import 'package:code/Utils/parameters.dart';
 
 class UserObj {
+  final String uid;
   final String firstName;
   final String lastName;
   final String gender;
@@ -11,6 +12,7 @@ class UserObj {
   final PhoneNumberObj? phoneNumber;
 
   UserObj({
+    required this.uid,
     required this.firstName,
     required this.lastName,
     required this.gender,
@@ -26,7 +28,8 @@ class UserObj {
   }
 
   UserObj.fromMap(Map map)
-      : firstName = map["firstName"].toString(),
+      : uid = map["uid"].toString(),
+        firstName = map["firstName"].toString(),
         lastName = map["lastName"].toString(),
         gender = map["gender"].toString(),
         birthDate = Params.defaultDateFormat.parse(map["birthDate"]),

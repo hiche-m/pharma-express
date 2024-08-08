@@ -10,6 +10,7 @@ class CameraModes extends StatefulWidget {
       {required this.options,
       this.initialSelection = 0,
       this.onChanged,
+      this.disabled = false,
       super.key});
 
   /// [List][String] options: List of String names for every mode label in the menu.
@@ -20,6 +21,9 @@ class CameraModes extends StatefulWidget {
 
   /// [ValueChanged][int] onChanged: Returns the index value of the selected mode.
   final ValueChanged<int>? onChanged;
+
+  /// [bool] disabled: When this is true, the color would grey out.
+  final bool disabled;
 
   @override
   State<CameraModes> createState() => _CameraModesState();
@@ -45,9 +49,12 @@ class _CameraModesState extends State<CameraModes> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
       decoration: BoxDecoration(
-        color: Palette.selectionColor,
+        color: widget.disabled
+            ? Palette.selectionColor.withAlpha(50)
+            : Palette.selectionColor,
         borderRadius: BorderRadius.circular(15.r),
       ),
       child: Row(

@@ -1,10 +1,13 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:code/Components/navbar_icon.dart';
+import 'package:code/Provider/cameras_provider.dart';
 import 'package:code/Utils/styling.dart';
+import 'package:code/Views/camera_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   CustomNavigationBar(
@@ -86,43 +89,59 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 25.h),
-            child: Container(
-              height: 80.h,
-              width: 80.h,
-              decoration: BoxDecoration(
-                color: Palette.mainColor,
-                borderRadius: BorderRadius.circular(9999),
-                boxShadow: [
-                  BoxShadow(
-                    color: Palette.darkMain.withOpacity(0.05),
-                    spreadRadius: 0,
-                    blurRadius: 8,
-                    offset: const Offset(2, 5),
-                  )
-                ],
-              ),
-              child: FractionallySizedBox(
-                heightFactor: 0.35,
-                alignment: Alignment.center,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  alignment: Alignment.center,
-                  child: SvgPicture.asset(
-                    // Icon Path
-                    "lib/Assets/Icons/Scan.svg",
-                    semanticsLabel: "Action Button",
-                    colorFilter:
-                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+        Consumer<CamerasProvider>(builder: (context, cameraNotifier, child) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 25.h),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          CameraView(cameras: cameraNotifier.cameras),
+                    ));
+                  },
+                  customBorder: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9999.r),
+                  ),
+                  child: Ink(
+                    height: 80.h,
+                    width: 80.h,
+                    decoration: BoxDecoration(
+                      color: Palette.mainColor,
+                      borderRadius: BorderRadius.circular(9999),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Palette.darkMain.withOpacity(0.05),
+                          spreadRadius: 0,
+                          blurRadius: 8,
+                          offset: const Offset(2, 5),
+                        )
+                      ],
+                    ),
+                    child: FractionallySizedBox(
+                      heightFactor: 0.35,
+                      alignment: Alignment.center,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        alignment: Alignment.center,
+                        child: SvgPicture.asset(
+                          // Icon Path
+                          "lib/Assets/Icons/Scan.svg",
+                          semanticsLabel: "Action Button",
+                          colorFilter: const ColorFilter.mode(
+                              Colors.white, BlendMode.srcIn),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ],
     );
   }

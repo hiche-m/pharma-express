@@ -69,4 +69,8 @@ class TextFM {
 
     return text;
   }
+
+  static String getCountryByIndex(String countryList, int index) {
+    return countryList.split(";")[index];
+  }
 }

@@ -1,5 +1,6 @@
 {
-  "helloWorld": "Bonjour monde!",
+  "or": "ou",
+  "and": "et",
   "qstMark": "?",
   "confirmNotification":"Confirmez-vous l'achat",
   "currency": "DA",
@@ -8,5 +9,22 @@
   "minuteUnit": "m",
   "hourUnit": "h",
   "dayUnit": "j",
-  "weekUnit": "s"
+  "weekUnit": "s",
+  "noAccount": "Vous n'avez pas de compte?",
+  "haveAccount": "Vous avez déjà un compte?",
+  "signUp": "Inscrivez-vous",
+  "logIn": "S'identifier",
+  "password": "Votre Mot de passe",
+  "forgotPassword": "Mot de passe oublié?",
+  "fname": "Nom",
+  "lname": "Prénom",
+  "phone": "Numéro Téléphone",
+  "email": "Email",
+  "confirmPass": "Confirmation Mot de passe",
+  "byCreating": "En créant un compte, vous acceptez nos",
+  "terms": "Conditions d'utilisation",
+  "policy": "Politique de confidentialité",
+  "selectCountry": "Séléctionnez votre pays",
+  "countries": "Algérie;France",
+  "end": " "
 }
