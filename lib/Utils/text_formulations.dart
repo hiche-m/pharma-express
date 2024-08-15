@@ -73,4 +73,12 @@ class TextFM {
   static String getCountryByIndex(String countryList, int index) {
     return countryList.split(";")[index];
   }
+
+  static String genderByIndex(int index) {
+    return ['Male', 'Female'][index];
+  }
+
+  static int indexByGender(String genderName) {
+    return ['Male', 'Female'].indexOf(genderName);
+  }
 }

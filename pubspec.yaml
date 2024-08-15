@@ -53,6 +53,7 @@ dependencies:
   camera: ^0.10.5+9
   expandable_page_view: ^1.0.17
   email_validator: ^3.0.0
+  http: ^1.2.0
 
 
 dev_dependencies:

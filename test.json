@@ -1,0 +1,20 @@
+{
+    "data": [
+        {
+            "id": 5,
+            "firstname": "Hichem",
+            "lastname": "Rahmani",
+            "phoneNumber": "0784397078",
+            "email": "hichem_rahmani@outlook.com",
+            "password": "$2b$10$NXnWfcWJMiXjYJbYjyr6Q.OlzshMatik7dc4cT17zb3jGchv1maIi",
+            "verified": 0,
+            "sex": 0,
+            "dateOfBirth": "2001-10-28T23:00:00.000Z",
+            "resetParams": 0,
+            "userPic": null,
+            "prescription": null
+        }
+    ],
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzIzNTU4ODM1LCJleHAiOjE3MjM2NDUyMzV9.vhG0-VHWnmbrEhQyzJEwzP6-EO_w43eVgobwUDqIQDw",
+    "message": "logged successfully"
+}

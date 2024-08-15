@@ -5,7 +5,7 @@ class CamerasProvider extends ChangeNotifier {
   List<CameraDescription> cameras = [];
   bool? loadingCameras = true;
 
-  void getCameras() async {
+  Future getCameras() async {
     try {
       cameras = await availableCameras();
       loadingCameras = false;
@@ -14,5 +14,6 @@ class CamerasProvider extends ChangeNotifier {
       loadingCameras = null;
     }
     notifyListeners();
+    return;
   }
 }

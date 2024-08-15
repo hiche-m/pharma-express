@@ -33,46 +33,49 @@ class _NotificationViewState extends State<NotificationView> {
       return const Center(child: Text("Loading..."));
     }
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 40.h),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Notifications", style: Palette.h1),
-              FaIcon(FontAwesomeIcons.solidTrashCan,
-                  color: Palette.textColor, size: 30.sp),
-            ],
-          ),
-          SizedBox(height: 30.h),
-          for (int i = 0; i < NotificationVM.notificationsList.length; i++)
-            (i > 0 &&
-                    NotificationVM.notificationsList[i].timestamp
-                            .difference(NotificationVM
-                                .notificationsList[i - 1].timestamp)
-                            .inDays >
-                        1)
-                ? NotificationTile(
-                    transaction: NotificationVM.notificationsList[i])
-                : Padding(
-                    padding: EdgeInsets.only(top: 25.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          DateFormat.yMMMMd().format(
-                              NotificationVM.notificationsList[i].timestamp),
-                          style: TextStyle(
-                            color: Palette.secoundaryText,
-                            fontSize: 18.sp,
+      padding: EdgeInsets.fromLTRB(40.w, 40.h, 40.w, 0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Notifications", style: Palette.h1),
+                FaIcon(FontAwesomeIcons.solidTrashCan,
+                    color: Palette.textColor, size: 30.sp),
+              ],
+            ),
+            SizedBox(height: 30.h),
+            for (int i = 0; i < NotificationVM.notificationsList.length; i++)
+              (i > 0 &&
+                      NotificationVM.notificationsList[i].timestamp
+                              .difference(NotificationVM
+                                  .notificationsList[i - 1].timestamp)
+                              .inDays >
+                          1)
+                  ? NotificationTile(
+                      transaction: NotificationVM.notificationsList[i])
+                  : Padding(
+                      padding: EdgeInsets.only(top: 25.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            DateFormat.yMMMMd().format(
+                                NotificationVM.notificationsList[i].timestamp),
+                            style: TextStyle(
+                              color: Palette.secoundaryText,
+                              fontSize: 18.sp,
+                            ),
                           ),
-                        ),
-                        NotificationTile(
-                            transaction: NotificationVM.notificationsList[i]),
-                      ],
+                          NotificationTile(
+                              transaction: NotificationVM.notificationsList[i]),
+                        ],
+                      ),
                     ),
-                  ),
-        ],
+            SizedBox(height: 40.h),
+          ],
+        ),
       ),
     );
   }

@@ -29,6 +29,13 @@ class _AuthViewState extends State<AuthView> {
   void initState() {
     super.initState();
     loadLocals();
+    AuthVM.controller = PageController(initialPage: AuthVM.pageIndex);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    AuthVM.controller.dispose();
   }
 
   @override

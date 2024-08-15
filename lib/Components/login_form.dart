@@ -1,5 +1,6 @@
 import 'package:code/Components/main_input.dart';
 import 'package:code/Components/main_input_button.dart';
+import 'package:code/Services/auth_service.dart';
 import 'package:code/Utils/parameters.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/authentification_view_model.dart';
@@ -19,6 +20,10 @@ class LogInForm extends StatefulWidget {
 class _LogInFormState extends State<LogInForm> {
   bool _hidePassword = true;
   List<String?> loginErrorList = List.filled(2, null);
+  Map<String, String> formValues = {
+    'email': '',
+    'password': '',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,11 @@ class _LogInFormState extends State<LogInForm> {
                 "placeholder":
                     "${AppLocalizations.of(context)!.email} ${AppLocalizations.of(context)!.or} ${AppLocalizations.of(context)!.phone}",
                 "autoFocus": true,
+                "onChanged": (value) {
+                  setState(() {
+                    formValues["email"] = value;
+                  });
+                },
                 "validator": (String? value) {
                   bool isFormatted =
                       Params.phoneFormat1.hasMatch(value ?? '') ||
@@ -72,6 +82,11 @@ class _LogInFormState extends State<LogInForm> {
                   });
                 },
                 "obscure": _hidePassword,
+                "onChanged": (value) {
+                  setState(() {
+                    formValues["password"] = value;
+                  });
+                },
                 "validator": (String? value) {
                   if (value.toString().length < 8) {
                     setState(() {
@@ -103,9 +118,10 @@ class _LogInFormState extends State<LogInForm> {
               SizedBox(height: 20.h),
               MainInputButton(
                 label: AppLocalizations.of(context)!.logIn,
-                onPressed: () {
+                onPressed: () async {
                   if (AuthVM.loginKey.currentState!.validate()) {
-                    print("Valid!");
+                    await AuthService.logIn(context, formValues["email"] ?? '',
+                        formValues["password"] ?? '');
                   }
                 },
               ),

@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 
 class NotificationsProvider extends ChangeNotifier {
   List<TransactionObj>? notificationList;
+  bool loadingNotifications = true;
 
-  void fetchNotifications(String uid) async {
+  Future fetchNotifications(String uid) async {
+    loadingNotifications = true;
     await Future.delayed(const Duration(seconds: 3));
 
     notificationList = FakeData.notifications;
+    loadingNotifications = false;
     notifyListeners();
+    return;
   }
 }

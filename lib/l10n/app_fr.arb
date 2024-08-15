@@ -26,5 +26,7 @@
   "policy": "Politique de confidentialité",
   "selectCountry": "Séléctionnez votre pays",
   "countries": "Algérie;France",
+  "male": "Male",
+  "female": "Femelle",
   "end": " "
 }

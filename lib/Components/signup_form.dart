@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:code/Components/country_local_dialog.dart';
+import 'package:code/Components/date_input.dart';
+import 'package:code/Components/gender_picker.dart';
 import 'package:code/Components/main_input.dart';
 import 'package:code/Components/main_input_button.dart';
+import 'package:code/Services/auth_service.dart';
 import 'package:code/Utils/parameters.dart';
 import 'package:code/Utils/phone_length_limit_formatter.dart';
 import 'package:code/Utils/styling.dart';
@@ -11,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -22,9 +28,17 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   var _selectedLocal = AuthVM.countryLocals[0];
   List<String?> signupErrorList = List.filled(6, null);
-  String? _currentPassword;
   bool _emailValid = false;
   bool _phoneValid = false;
+  Map<String, dynamic> formValues = {
+    "firstname": '',
+    "lastname": '',
+    "phoneNumber": '',
+    "email": '',
+    "password": '',
+    "sex": 0,
+    "dateOfBirth": '',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +58,9 @@ class _SignUpFormState extends State<SignUpForm> {
               SizedBox(height: 30.h),
               MainInput(
                 placeholder: AppLocalizations.of(context)!.lname,
+                onChanged: (value) {
+                  formValues['lastname'] = value;
+                },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     setState(() {
@@ -58,10 +75,14 @@ class _SignUpFormState extends State<SignUpForm> {
                 },
                 error: signupErrorList[0],
                 keyboardType: TextInputType.name,
+                /* autoFocus: true, */
               ),
               SizedBox(height: 10.h),
               MainInput(
                 placeholder: AppLocalizations.of(context)!.fname,
+                onChanged: (value) {
+                  formValues['firstname'] = value;
+                },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     setState(() {
@@ -76,6 +97,24 @@ class _SignUpFormState extends State<SignUpForm> {
                 },
                 error: signupErrorList[1],
                 keyboardType: TextInputType.name,
+              ),
+              SizedBox(height: 10.h),
+              DateInput(
+                placeholder: 'Birth Date (dd/MM/yyyy)',
+                onChanged: (DateTime? pickedDate) {
+                  if (pickedDate != null) {
+                    formValues['dateOfBirth'] =
+                        DateFormat('dd/MM/yyyy').format(pickedDate);
+                  }
+                },
+              ),
+              SizedBox(height: 10.h),
+              GenderPicker(
+                initialValue: formValues['sex'],
+                onChanged: (int? selected) {
+                  log(selected.toString());
+                  formValues['sex'] = selected;
+                },
               ),
               SizedBox(height: 10.h),
               MainInput(
@@ -124,6 +163,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 },
                 keyboardType: TextInputType.phone,
                 onChanged: (value) {
+                  formValues['phoneNumber'] = value;
+
                   bool isEmpty = value == null || value.isEmpty;
                   if (_phoneValid != isEmpty) {
                     setState(() {
@@ -155,6 +196,8 @@ class _SignUpFormState extends State<SignUpForm> {
                 error: signupErrorList[3],
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
+                  formValues['email'] = value;
+
                   bool isEmpty = value == null || value.isEmpty;
                   if (_emailValid != isEmpty) {
                     setState(() {
@@ -167,10 +210,8 @@ class _SignUpFormState extends State<SignUpForm> {
               MainInput(
                 placeholder: AppLocalizations.of(context)!.password,
                 obscure: true,
-                onChanged: (String? value) {
-                  setState(() {
-                    _currentPassword = value;
-                  });
+                onChanged: (value) {
+                  formValues['password'] = value;
                 },
                 validator: (String? value) {
                   if (value == null || value.length < 8) {
@@ -198,7 +239,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     });
                     return '';
                   }
-                  if (value != _currentPassword) {
+                  if (value != formValues['password']) {
                     setState(() {
                       signupErrorList[5] = 'Passwords do not match.';
                     });
@@ -242,9 +283,13 @@ class _SignUpFormState extends State<SignUpForm> {
               SizedBox(height: 20.h),
               MainInputButton(
                 label: AppLocalizations.of(context)!.signUp,
-                onPressed: () {
+                onPressed: () async {
+                  log('Clicked SIGN UP');
+                  log(formValues.toString());
                   if (AuthVM.signupKey.currentState!.validate()) {
-                    print('Valid!');
+                    String? error =
+                        await AuthService.signUp(context, formValues);
+                    log('SIGN UP RESULTS: $error');
                   }
                 },
               ),

@@ -26,5 +26,7 @@
   "policy": "Privacy policy",
   "selectCountry": "Select your country",
   "countries": "Algeria;France",
+  "male": "Male",
+  "female": "Female",
   "end": " "
 }

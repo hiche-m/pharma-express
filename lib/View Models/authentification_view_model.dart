@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AuthVM {
   static int pageIndex = 0;
-  static var controller = PageController(initialPage: pageIndex);
+  static PageController controller = PageController(initialPage: pageIndex);
   static List<PhoneLocal> countryLocals = [];
   static bool loadingLocals = true;
 

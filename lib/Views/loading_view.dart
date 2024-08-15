@@ -28,21 +28,23 @@ class _LoadingViewState extends State<LoadingView> {
         ],
         child: Consumer2<UserProvider, NotificationsProvider>(
             builder: (context, userNotifier, notificationsNotifier, child) {
-          userNotifier.fetchUser();
+          return FutureBuilder(
+              future: userNotifier.isLoading ? userNotifier.fetchUser() : null,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SafeArea(
+                      child: Container(
+                          color: Palette.mainColor,
+                          child: const Center(
+                              child: MyLoadingIndicator(type: 1))));
+                }
 
-          if (userNotifier.isLoading) {
-            return SafeArea(
-                child: Container(
-                    color: Palette.mainColor,
-                    child: const Center(child: MyLoadingIndicator(type: 1))));
-          }
-
-          if (userNotifier.currentUser == null) {
-            return const AuthView();
-          }
-
-          notificationsNotifier.fetchNotifications("username123");
-          return const Home();
+                if (userNotifier.currentUser == null) {
+                  return const AuthView();
+                }
+                notificationsNotifier.fetchNotifications("username123");
+                return const Home();
+              });
         }),
       );
     }
@@ -58,22 +60,33 @@ class _LoadingViewState extends State<LoadingView> {
       child: Consumer3<UserProvider, NotificationsProvider, CamerasProvider>(
           builder: (context, userNotifier, notificationsNotifier,
               cameraNotifier, child) {
-        userNotifier.fetchUser();
-        cameraNotifier.getCameras();
-
-        if (userNotifier.isLoading || cameraNotifier.loadingCameras == true) {
-          return SafeArea(
-              child: Container(
-                  color: Palette.mainColor,
-                  child: const Center(child: MyLoadingIndicator(type: 1))));
+        List<Future<dynamic>> futures = [];
+        if (userNotifier.isLoading) {
+          futures.add(userNotifier.fetchUser());
+        }
+        if (cameraNotifier.loadingCameras == true) {
+          futures.add(cameraNotifier.getCameras());
+        }
+        if (notificationsNotifier.loadingNotifications == true) {
+          futures.add(notificationsNotifier.fetchNotifications("username123"));
         }
 
-        if (userNotifier.currentUser == null) {
-          notificationsNotifier.fetchNotifications("username123");
-          return const AuthView();
-        }
+        return FutureBuilder(
+            future: Future.wait(futures),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SafeArea(
+                    child: Container(
+                        color: Palette.mainColor,
+                        child:
+                            const Center(child: MyLoadingIndicator(type: 1))));
+              }
 
-        return const Home();
+              if (userNotifier.currentUser == null) {
+                return const AuthView();
+              }
+              return const Home();
+            });
       }),
     );
   }
