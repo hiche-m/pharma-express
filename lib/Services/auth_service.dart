@@ -11,9 +11,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   static Future logIn(BuildContext context, String id, String password) async {
-    Map? response = await HttpRequests.userLogin(id, password);
+    log("Logging in...");
+    var response = await HttpRequests.userLogin(id, password);
+    log("RESPONSE: $response");
 
-    if (response != null) {
+    if (response is! String) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('authToken', response['token']);
       Map userMap = response['data'][0];
@@ -32,6 +34,10 @@ class AuthService {
             : null,
       });
       context.read<UserProvider>().updateUserValue(user);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response)),
+      );
     }
     return;
   }

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class HttpRequests {
-  static const String host = 'http://192.168.1.107';
+  static const String host = 'http://192.168.1.100';
   static const int port = 3000;
 
   static Future userLogin(String id, String password) async {
@@ -24,13 +24,13 @@ class HttpRequests {
       );
 
       if (response.statusCode != 500) {
-        return null;
+        return 'An error has occured, please try again later...';
       }
 
       return jsonDecode(response.body);
     } on Exception catch (e) {
       print(e.toString());
-      return null;
+      return e.toString();
     }
   }
 

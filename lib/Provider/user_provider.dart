@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:code/Models/user_object.dart';
 import 'package:code/Services/http_requests.dart';
+import 'package:code/Utils/fake_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,7 +18,17 @@ class UserProvider extends ChangeNotifier {
 
   bool isLoading = true;
 
-  Future fetchUser() async {
+  Future fetchUser({bool devMode = false}) async {
+    if (devMode) {
+      await Future.delayed(const Duration(seconds: 2));
+
+      _currentUser = UserObj.fromMap(FakeData.userInfo);
+      isLoading = false;
+      notifyListeners();
+
+      return;
+    }
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final String? userToken = prefs.getString('authToken');

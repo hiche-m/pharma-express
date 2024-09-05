@@ -5,6 +5,7 @@ import 'package:code/Provider/user_provider.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/Views/authentification_view.dart';
 import 'package:code/Views/home_view.dart';
+import 'package:code/Views/map_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,7 @@ class _LoadingViewState extends State<LoadingView> {
               cameraNotifier, child) {
         List<Future<dynamic>> futures = [];
         if (userNotifier.isLoading) {
-          futures.add(userNotifier.fetchUser());
+          futures.add(userNotifier.fetchUser(devMode: true));
         }
         if (cameraNotifier.loadingCameras == true) {
           futures.add(cameraNotifier.getCameras());
