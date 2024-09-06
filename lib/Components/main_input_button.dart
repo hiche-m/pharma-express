@@ -7,18 +7,20 @@ class MainInputButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.backgroundColor = Palette.mainColor,
+    this.wide = true,
     super.key,
   });
 
   final String label;
   final VoidCallback onPressed;
   final Color backgroundColor;
+  final bool wide;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 45.h,
-      width: 1.sw,
+      width: wide ? 1.sw : null,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(

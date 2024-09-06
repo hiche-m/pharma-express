@@ -1,5 +1,6 @@
 import 'package:code/Utils/styling.dart';
 import 'package:code/Views/loading_view.dart';
+import 'package:code/Views/reminder_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -33,7 +34,7 @@ void main() {
         designSize: Size(492, 776),
         minTextAdapt: true,
         splitScreenMode: true,
-        child: LoadingView(),
+        child: Scaffold(body: ReminderView()),
       ),
     ),
   );

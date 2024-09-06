@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 
 class HomeVM {
   static final List<Widget> pagesList = [
-    const MapView(),
+    const MapView(devMode: true),
     const NotificationView(),
     const ReminderView(),
     const SettingsView(),
   ];
 
-  static int pageIndex = 1;
+  static int pageIndex = 2;
 
-  static final pageController = PageController(initialPage: 1);
+  static final pageController = PageController(initialPage: 2);
 
   static void animateToPage(int index, int selected) {
-    if ((selected - index).abs() == 1) {
+    if ((selected - index).abs() == 0) {
       pageController.animateToPage(index,
           duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     } else if ((selected - index).abs() > 1) {

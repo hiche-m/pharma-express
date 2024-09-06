@@ -17,22 +17,25 @@ class FakeData {
 
   static Map<String, InstructionsObj?> instructions = {
     "515Fdjk7": InstructionsObj.fromMap({
+      "label": "Doliprane 500mg",
       "duration": 30,
       "tpd": 2,
-      "ppt": 0.5,
-      "time": 0,
-    }),
-    "d4qsd65K": InstructionsObj.fromMap({
-      "duration": 15,
-      "tpd": 3,
       "ppt": 1,
       "time": 1,
     }),
-    "SQqsd45QSD": InstructionsObj.fromMap({
+    "d4qsd65K": InstructionsObj.fromMap({
+      "label": "MED1",
       "duration": 15,
       "tpd": 1,
-      "ppt": 1,
+      "ppt": 0.5,
       "time": 2,
+    }),
+    "SQqsd45QSD": InstructionsObj.fromMap({
+      "label": "MED2",
+      "duration": 15,
+      "tpd": 2,
+      "ppt": 1,
+      "time": 1,
     })
   };
 
