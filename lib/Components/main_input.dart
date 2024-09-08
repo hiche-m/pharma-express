@@ -21,6 +21,7 @@ class MainInput extends StatefulWidget {
       this.keyboardType,
       this.autoFocus = false,
       this.obscure = false,
+      this.showBorder = true,
       super.key});
 
   /// [String] title: Equivalent to a label in html, when set a title will appear above the [TextFormField].
@@ -54,6 +55,11 @@ class MainInput extends StatefulWidget {
   ///
   /// (Obscure = true): Password = ********
   final bool obscure;
+
+  /// When set to true, the MainInput widget will have a border.
+  ///
+  /// This includes error/selection outlines.
+  final bool showBorder;
 
   /// [Widget] leadingIcon: When set, a leading icon/widget will appear before the text of the [TextFormField].
   final Widget? leadingIcon;
@@ -127,6 +133,7 @@ class MainInput extends StatefulWidget {
         inputFormatters = map["inputFormatters"],
         keyboardType = map["keyboardType"],
         autoFocus = map["autoFocus"] ?? false,
+        showBorder = map["showBorder"] ?? true,
         obscure = map["obscure"] ?? false;
 
   @override
@@ -156,14 +163,16 @@ class _MainInputState extends State<MainInput> {
           Container(
             decoration: BoxDecoration(
               color: Palette.backgroundColor,
-              border: Border.all(
-                color: widget.error == null
-                    ? _selected
-                        ? Palette.mainColor
-                        : Palette.disabledColor
-                    : Colors.red,
-                width: _selected || widget.error != null ? 1.5 : 1.0,
-              ),
+              border: widget.showBorder
+                  ? Border.all(
+                      color: widget.error == null
+                          ? _selected
+                              ? Palette.mainColor
+                              : Palette.disabledColor
+                          : Colors.red,
+                      width: _selected || widget.error != null ? 1.5 : 1.0,
+                    )
+                  : null,
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Focus(
@@ -201,8 +210,9 @@ class _MainInputState extends State<MainInput> {
                         keyboardType: widget.keyboardType,
                         decoration: InputDecoration(
                           border: InputBorder.none,
+                          isDense: true,
                           contentPadding:
-                              EdgeInsets.fromLTRB(5.w, 15.h, 0, 15.h),
+                              EdgeInsets.fromLTRB(10.w, 15.h, 0, 15.h),
                           hintText: widget.placeholder,
                           hintStyle: TextStyle(
                             color: Palette.placeholderGrey,

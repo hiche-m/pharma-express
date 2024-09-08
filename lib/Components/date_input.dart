@@ -13,6 +13,7 @@ class DateInput extends StatefulWidget {
       this.onChanged,
       this.dateFormat = 'dd/MM/yyyy',
       this.autoFocus = false,
+      this.showBorder = true,
       super.key});
 
   final String? title;
@@ -21,6 +22,7 @@ class DateInput extends StatefulWidget {
   final void Function(DateTime?)? onChanged;
   final bool autoFocus;
   final String? initialValue;
+  final bool showBorder;
 
   @override
   State<DateInput> createState() => _DateInputState();
@@ -75,14 +77,16 @@ class _DateInputState extends State<DateInput> {
           Container(
             decoration: BoxDecoration(
               color: Palette.backgroundColor,
-              border: Border.all(
-                color: error == null
-                    ? _selected
-                        ? Palette.mainColor
-                        : Palette.disabledColor
-                    : Colors.red,
-                width: _selected || error != null ? 1.5 : 1.0,
-              ),
+              border: widget.showBorder
+                  ? Border.all(
+                      color: error == null
+                          ? _selected
+                              ? Palette.mainColor
+                              : Palette.disabledColor
+                          : Colors.red,
+                      width: _selected || error != null ? 1.5 : 1.0,
+                    )
+                  : null,
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Focus(
@@ -119,8 +123,9 @@ class _DateInputState extends State<DateInput> {
                         keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
                           border: InputBorder.none,
+                          isDense: true,
                           contentPadding:
-                              EdgeInsets.fromLTRB(5.w, 15.h, 0, 15.h),
+                              EdgeInsets.fromLTRB(10.w, 15.h, 0, 15.h),
                           hintText: widget.placeholder,
                           hintStyle: TextStyle(
                             color: Palette.placeholderGrey,
