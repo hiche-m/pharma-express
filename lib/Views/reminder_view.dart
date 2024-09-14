@@ -58,6 +58,7 @@ class _ReminderViewState extends State<ReminderView> {
                     style: Palette.h2.copyWith(color: Colors.green)),
                 const Spacer(),
                 Material(
+                  color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
                       ReminderVM.showReminderDialog(context);
