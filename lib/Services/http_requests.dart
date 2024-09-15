@@ -1,10 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:code/Models/user_object.dart';
-import 'package:code/Utils/text_formulations.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class HttpRequests {
   static const String host = 'http://192.168.1.100';

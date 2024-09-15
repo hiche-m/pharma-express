@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:code/Utils/fake_data.dart';
 import 'package:code/Utils/parameters.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
@@ -12,7 +13,7 @@ class MapVM {
 
   static MapController? mapController;
 
-  static List<Marker>? markers;
+  static List<Marker> markers = [];
 
   static Future<List<Marker>> loadMarkers() async {
     List<Marker> markersData = [];
@@ -22,12 +23,13 @@ class MapVM {
         point: LatLng(item.value["longtitude"], item.value["latitude"]),
         child: FaIcon(
           FontAwesomeIcons.locationDot,
-          size: 25.r,
+          size: 30.r,
+          color: Colors.blueGrey.shade800,
         ),
       ));
     }
 
-    markers = markersData;
+    markers.addAll(markersData);
     return markersData;
   }
 

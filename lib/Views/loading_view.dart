@@ -5,7 +5,6 @@ import 'package:code/Provider/user_provider.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/Views/authentification_view.dart';
 import 'package:code/Views/home_view.dart';
-import 'package:code/Views/map_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

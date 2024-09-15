@@ -53,9 +53,8 @@ class CameraVM {
 
   /// Function responsible for toggling between the front camera and the back camera
   static Future switchCamera(List<CameraDescription> cameras) async {
-    if (controller != null) {
-      await controller.dispose();
-    }
+    await controller.dispose();
+
     selectedCameraIndex = (selectedCameraIndex + 1) % cameras.length;
     CameraVM.controller =
         CameraController(cameras[selectedCameraIndex], ResolutionPreset.max);
