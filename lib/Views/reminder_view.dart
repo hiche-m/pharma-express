@@ -16,13 +16,6 @@ class ReminderView extends StatefulWidget {
 
 class _ReminderViewState extends State<ReminderView> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Future.delayed(const Duration(seconds: 1))
-        .then((value) => ReminderVM.showReminderDialog(context));
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Padding(

@@ -71,4 +71,27 @@ class FakeData {
         countryLocal: "fr",
         flagPath: "lib/Assets/Vectors/fr.svg"),
   ];
+
+  static Map pharmaciesLocation = {
+    'A1B2C3': {
+      "name": "Bouziane Pharmacy",
+      "longtitude": 35.697262607077086,
+      "latitude": -0.6072347962559662,
+    },
+    'D4E5F6': {
+      "name": "Center Exploration Cardiovascular Dr Handoumeh Wassim",
+      "longtitude": 35.69519235599149,
+      "latitude": -0.616543627070969,
+    },
+    'G7H8I9': {
+      "name": "Pharmacie CHELLAL S Oran",
+      "longtitude": 35.691508970520694,
+      "latitude": -0.6129866838338345,
+    },
+    'J1K2L3': {
+      "name": "PHARMACIE Dr. BOUKALKHA",
+      "longtitude": 35.70311360377163,
+      "latitude": -0.6102816760420045,
+    },
+  };
 }
