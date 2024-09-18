@@ -20,9 +20,9 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     super.initState();
+    MapVM.mapController = MapController();
     MapVM.determinePosition().then((result) => {
-          if (result != null && MapVM.mapController != null)
-            {MapVM.mapController!.move(result, 13.0)}
+          if (result != null) {MapVM.mapController.move(result, 13.0)}
         });
     MapVM.loadMarkers();
   }
@@ -30,7 +30,7 @@ class _MapViewState extends State<MapView> {
   @override
   void dispose() {
     super.dispose();
-    MapVM.mapController?.dispose();
+    MapVM.mapController.dispose();
   }
 
   @override
@@ -47,6 +47,20 @@ class _MapViewState extends State<MapView> {
                       maxZoom: 17,
                       initialZoom: 15,
                       initialCenter: MapVM.currentLocation,
+                      onPositionChanged: (position, hasGesture) {
+                        if (!MapVM.movedPosition &&
+                            position.center != MapVM.currentLocation) {
+                          setState(() {
+                            MapVM.movedPosition = true;
+                          });
+                        }
+                        if (MapVM.movedPosition &&
+                            position.center == MapVM.currentLocation) {
+                          setState(() {
+                            MapVM.movedPosition = false;
+                          });
+                        }
+                      },
                     ),
                     children: [
                       TileLayer(
@@ -78,6 +92,20 @@ class _MapViewState extends State<MapView> {
           ],
         ),
       ),
+      floatingActionButton: MapVM.movedPosition
+          ? FloatingActionButton(
+              onPressed: () {
+                MapVM.recenter();
+              },
+              backgroundColor: Palette.mainColor,
+              shape: const StadiumBorder(),
+              child: FaIcon(
+                FontAwesomeIcons.compass,
+                color: Colors.white,
+                size: 35.r,
+              ),
+            )
+          : null,
     );
   }
 }

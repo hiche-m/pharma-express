@@ -11,9 +11,11 @@ import 'package:flutter_map/flutter_map.dart';
 class MapVM {
   static LatLng currentLocation = Params.myLocation;
 
-  static MapController? mapController;
+  static var mapController = MapController();
 
   static List<Marker> markers = [];
+
+  static bool movedPosition = false;
 
   static Future<List<Marker>> loadMarkers() async {
     List<Marker> markersData = [];
@@ -26,6 +28,7 @@ class MapVM {
           size: 30.r,
           color: Colors.blueGrey.shade800,
         ),
+        rotate: true,
       ));
     }
 
@@ -73,5 +76,9 @@ class MapVM {
     currentLocation =
         LatLng(currentPosition.latitude, currentPosition.longitude);
     return currentLocation;
+  }
+
+  static void recenter() {
+    mapController.moveAndRotate(currentLocation, 15.0, 0.0);
   }
 }

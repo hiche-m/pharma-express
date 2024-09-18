@@ -33,6 +33,11 @@ class _CameraViewState extends State<CameraView> {
         CameraVM.isLoading = false;
       });
     });
+    CameraVM.loadingController.stream.listen((value) {
+      setState(() {
+        CameraVM.isLoading = value;
+      });
+    });
   }
 
   @override
@@ -254,13 +259,8 @@ class _CameraViewState extends State<CameraView> {
                                           focusColor:
                                               Colors.black.withOpacity(0.1),
                                           onTap: () async {
-                                            setState(() {
-                                              CameraVM.isLoading = true;
-                                            });
                                             await CameraVM.capturePicture();
-                                            setState(() {
-                                              CameraVM.isLoading = false;
-                                            });
+
                                             CameraVM.previewImage(context);
                                           },
                                           child: Ink(
@@ -279,16 +279,8 @@ class _CameraViewState extends State<CameraView> {
                                         color: Colors.transparent,
                                         child: InkWell(
                                           onTap: () async {
-                                            setState(() {
-                                              CameraVM.isLoading = true;
-                                            });
                                             await CameraVM.switchCamera(
                                                 widget.cameras);
-                                            if (mounted) {
-                                              setState(() {
-                                                CameraVM.isLoading = false;
-                                              });
-                                            }
                                           },
                                           customBorder: RoundedRectangleBorder(
                                             borderRadius:

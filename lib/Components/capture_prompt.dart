@@ -56,7 +56,10 @@ class CapturePrompt extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => print("Sent!"),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        CameraVM.sendPicture();
+                      },
                       child: CircleAvatar(
                         radius: 55.r,
                         backgroundColor: Palette.mainColor,
