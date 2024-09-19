@@ -78,8 +78,9 @@ class HttpRequests {
           filename: perscription.path.split('/').last);
 
       request.files.add(multipartFile);
-
+      log("Fields set, sending...");
       var response = await request.send();
+      log("Request Sent!");
 
       return http.Response.fromStream(response);
     } catch (e) {

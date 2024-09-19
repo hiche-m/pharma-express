@@ -37,7 +37,10 @@ class CameraVM {
 
   /// Function to reset all parameters to their initial value
   static void dispose() {
-    loadingController.add(true);
+    isLoading = true;
+    if (!loadingController.isClosed) {
+      loadingController.close();
+    }
     optionStatus = [false, false, false];
     controller.dispose();
     selectedCameraIndex = 0;
@@ -60,7 +63,9 @@ class CameraVM {
 
   /// Function responsible for toggling between the front camera and the back camera
   static Future switchCamera(List<CameraDescription> cameras) async {
-    loadingController.add(true);
+    if (!loadingController.isClosed) {
+      loadingController.add(true);
+    }
     await controller.dispose();
 
     selectedCameraIndex = (selectedCameraIndex + 1) % cameras.length;
@@ -69,12 +74,16 @@ class CameraVM {
     await CameraVM.controller.initialize();
     isFrontCamera = selectedCameraIndex == 1;
 
-    loadingController.add(false);
+    if (!loadingController.isClosed) {
+      loadingController.add(false);
+    }
   }
 
   /// Function responsible for capturing pictures in the Camera View
   static Future capturePicture() async {
-    loadingController.add(true);
+    if (!loadingController.isClosed) {
+      loadingController.add(true);
+    }
     if (!controller.value.isInitialized) {
       return;
     }
@@ -92,7 +101,9 @@ class CameraVM {
       print('Image Not Saved!');
     }
 
-    loadingController.add(false);
+    if (!loadingController.isClosed) {
+      loadingController.add(false);
+    }
   }
 
   /// Function to open the captured picture
@@ -106,7 +117,9 @@ class CameraVM {
 
   /// Send perscription picture to backend
   static Future<String?> sendPicture() async {
-    loadingController.add(true);
+    /* if(!loadingController.isClosed){
+      loadingController.add(true);
+    } */
     if (capturedImage != null) {
       log("Sending Request...");
       var result = await HttpRequests.sendPerscriptionRequest({
@@ -114,7 +127,7 @@ class CameraVM {
         "latitude": '${Params.myLocation.latitude}',
         "longitude": '${Params.myLocation.longitude}',
       }, capturedImage!);
-      log("Request Sent!");
+      log("Response available!");
 
       if (result is String) {
         log(result.toString());
@@ -127,7 +140,9 @@ class CameraVM {
       log("Invalid image!");
     }
 
-    loadingController.add(false);
+    /* if(!loadingController.isClosed){
+      loadingController.add(false);
+    } */
     return null;
   }
 }

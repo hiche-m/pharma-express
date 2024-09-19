@@ -8,6 +8,7 @@ import 'package:code/View%20Models/camera_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:async';
 
 class CameraView extends StatefulWidget {
   const CameraView({required this.cameras, super.key});
@@ -24,6 +25,9 @@ class _CameraViewState extends State<CameraView> {
     super.initState();
     CameraVM.controller =
         CameraController(widget.cameras[0], ResolutionPreset.max);
+
+    CameraVM.loadingController = StreamController<bool>.broadcast();
+
     CameraVM.controller.setFlashMode(FlashMode.off);
     CameraVM.controller.initialize().then((_) {
       if (!mounted) {

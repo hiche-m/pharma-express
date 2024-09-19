@@ -18,5 +18,5 @@ class Params {
 
   static const String mapboxStyleId = "cm0o2il8f00fn01pmg8n72uwt";
 
-  static const myLocation = LatLng(35.697259764734085, -0.6151968240742107);
+  static const myLocation = LatLng(0.0, 0.0);
 }

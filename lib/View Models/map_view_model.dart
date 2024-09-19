@@ -1,14 +1,22 @@
 import 'dart:developer';
 import 'package:code/Utils/fake_data.dart';
 import 'package:code/Utils/parameters.dart';
+import 'package:code/View%20Models/camera_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'dart:async';
 
 class MapVM {
+  /// When this is true, the screen is still loading
+  static bool isLoading = false;
+
+  static StreamController<bool> loadingController =
+      StreamController<bool>.broadcast();
+
   static LatLng currentLocation = Params.myLocation;
 
   static var mapController = MapController();
@@ -80,5 +88,11 @@ class MapVM {
 
   static void recenter() {
     mapController.moveAndRotate(currentLocation, 15.0, 0.0);
+  }
+
+  static void loadAcceptedLocations() async {
+    loadingController.add(true);
+    await CameraVM.sendPicture();
+    loadingController.add(false);
   }
 }

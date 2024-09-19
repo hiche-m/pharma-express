@@ -1,5 +1,7 @@
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/camera_view_model.dart';
+import 'package:code/View%20Models/home_view_model.dart';
+import 'package:code/View%20Models/map_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -58,7 +60,10 @@ class CapturePrompt extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pop();
-                        CameraVM.sendPicture();
+                        Navigator.of(context).pop();
+                        HomeVM.pageIndex = 0;
+                        HomeVM.animateToPage(0, 1);
+                        MapVM.loadAcceptedLocations();
                       },
                       child: CircleAvatar(
                         radius: 55.r,

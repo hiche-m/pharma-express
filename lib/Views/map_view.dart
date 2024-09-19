@@ -1,3 +1,4 @@
+import 'package:code/Components/loading_indicator.dart';
 import 'package:code/Components/search_bar.dart';
 import 'package:code/Utils/parameters.dart';
 import 'package:code/Utils/styling.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:async';
 
 class MapView extends StatefulWidget {
   const MapView({this.devMode = false, super.key});
@@ -20,17 +22,31 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     super.initState();
+    MapVM.loadingController = StreamController<bool>.broadcast();
+
     MapVM.mapController = MapController();
     MapVM.determinePosition().then((result) => {
-          if (result != null) {MapVM.mapController.move(result, 13.0)}
+          if (result != null) {MapVM.mapController.move(result, 14.0)}
         });
     MapVM.loadMarkers();
+    MapVM.loadingController.stream.listen((value) {
+      if (value) {
+        setState(() {
+          MapVM.isLoading = value;
+        });
+      } else {
+        setState(() {
+          MapVM.isLoading = value;
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     MapVM.mapController.dispose();
+    MapVM.loadingController.close();
   }
 
   @override
@@ -89,10 +105,17 @@ class _MapViewState extends State<MapView> {
               alignment: Alignment.topCenter,
               child: MySearchBar(),
             ),
+            if (MapVM.isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.25),
+                child: const Center(
+                  child: MyLoadingIndicator(type: 2),
+                ),
+              ),
           ],
         ),
       ),
-      floatingActionButton: MapVM.movedPosition
+      floatingActionButton: MapVM.movedPosition && !MapVM.isLoading
           ? FloatingActionButton(
               onPressed: () {
                 MapVM.recenter();
