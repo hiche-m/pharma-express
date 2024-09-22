@@ -16,6 +16,12 @@ class PharmacyObj {
   PharmacyObj.fromMap(Map map)
       : label = map['storeName'],
         tags = map['services'].toString().trim().split(','),
-        position = LatLng(map['latitude'], map['longitude']),
+        position = LatLng(
+            map['latitude'] is double
+                ? map['latitude']
+                : double.parse(map['latitude']),
+            map['longitude'] is double
+                ? map['longitude']
+                : double.parse(map['longitude'])),
         address = map['adresse'];
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/camera_view_model.dart';
 import 'package:code/View%20Models/home_view_model.dart';
@@ -63,7 +65,13 @@ class CapturePrompt extends StatelessWidget {
                         Navigator.of(context).pop();
                         HomeVM.pageIndex = 0;
                         HomeVM.animateToPage(0, 1);
-                        MapVM.loadAcceptedLocations(CameraVM.capturedImage!);
+                        try {
+                          MapVM.loadAcceptedLocations(
+                              HomeVM.scaffoldMessengerKey.currentContext!,
+                              CameraVM.capturedImage!);
+                        } catch (e) {
+                          log("ERROR: No context.");
+                        }
                       },
                       child: CircleAvatar(
                         radius: 55.r,

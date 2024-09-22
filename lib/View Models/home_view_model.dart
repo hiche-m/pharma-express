@@ -5,6 +5,8 @@ import 'package:code/Views/settings_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeVM {
+  static late GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+
   static final List<Widget> pagesList = [
     const MapView(),
     const NotificationView(),

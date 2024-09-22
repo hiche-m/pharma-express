@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:code/Models/pharmacy_object.dart';
+import 'package:code/Provider/request_provider.dart';
 import 'package:code/Services/http_requests.dart';
 import 'package:code/Utils/fake_data.dart';
 import 'package:code/Utils/parameters.dart';
 import 'package:code/View%20Models/camera_view_model.dart';
+import 'package:code/View%20Models/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,16 +15,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
 class MapVM {
-  static GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>();
-
-  /// When this is true, the screen is still loading
-  static bool isLoading = false;
-
-  static StreamController<bool> loadingController =
-      StreamController<bool>.broadcast();
-
   static LatLng currentLocation = Params.myLocation;
 
   static var mapController = MapController();
@@ -30,11 +25,6 @@ class MapVM {
   static List<Marker> markers = [];
 
   static bool movedPosition = false;
-
-  static List<PharmacyObj> pharmaAcceptList = [];
-
-  static StreamController<Map> pharmaAcceptController =
-      StreamController<Map>.broadcast();
 
   static Future<List<Marker>> loadMarkers() async {
     List<Marker> markersData = [];
@@ -101,14 +91,9 @@ class MapVM {
     mapController.moveAndRotate(currentLocation, 15.0, 0.0);
   }
 
-  static void loadAcceptedLocations(File perscription) async {
-    if (!loadingController.isClosed) {
-      loadingController.add(true);
-    } else {
-      scaffoldMessengerKey.currentState?.showSnackBar(const SnackBar(
-        content: Text("Preparing to send request..."),
-      ));
-    }
+  static void loadAcceptedLocations(
+      BuildContext context, File perscription) async {
+    context.read<RequestProvider>().setLoading(true);
 
     var idPerscription = await CameraVM.sendPicture(perscription);
 
@@ -116,7 +101,7 @@ class MapVM {
       for (int i = 0; i <= Params.pharmaCheckAttemps; i++) {
         if (i == Params.pharmaCheckAttemps) {
           log("Timeout! no pharmacy accepted your request.");
-          scaffoldMessengerKey.currentState?.showSnackBar(const SnackBar(
+          HomeVM.scaffoldMessengerKey.currentState?.showSnackBar(const SnackBar(
             content: Text("Timeout! no pharmacy accepted your request."),
           ));
           break;
@@ -124,11 +109,10 @@ class MapVM {
         Map accepted =
             await HttpRequests.checkAccepts('4', '16' /* "$idPerscription" */);
         if (accepted["data"] != null) {
-          log(accepted["data"][0].toString());
-          pharmaAcceptController.add(accepted["data"][0]);
-          scaffoldMessengerKey.currentState?.showSnackBar(const SnackBar(
-            content: Text("Waiting for a pharmacy response!"),
-          ));
+          context
+              .read<RequestProvider>()
+              .addPharma(PharmacyObj.fromMap(accepted["data"][0]));
+
           break;
         }
         await Future.delayed(const Duration(seconds: 3));
@@ -137,26 +121,6 @@ class MapVM {
       log(e.toString());
     }
 
-    if (!loadingController.isClosed) {
-      loadingController.add(false);
-    }
-  }
-
-  static void showPharmaSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return ListView(
-          children: [
-            for (var pharma in MapVM.pharmaAcceptList)
-              ListTile(
-                leading: Icon(Icons.share),
-                title: Text(pharma.label),
-                onTap: () => {}, // Add your onTap function here
-              ),
-          ],
-        );
-      },
-    );
+    context.read<RequestProvider>().setLoading(false);
   }
 }

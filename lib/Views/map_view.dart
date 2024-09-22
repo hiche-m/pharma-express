@@ -1,8 +1,4 @@
-import 'dart:developer';
-
-import 'package:code/Components/loading_indicator.dart';
 import 'package:code/Components/search_bar.dart';
-import 'package:code/Models/pharmacy_object.dart';
 import 'package:code/Utils/parameters.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/map_view_model.dart';
@@ -10,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'dart:async';
 
 class MapView extends StatefulWidget {
   const MapView({this.devMode = false, super.key});
@@ -25,21 +20,15 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     super.initState();
-    MapVM.loadingController = StreamController<bool>.broadcast();
 
     MapVM.mapController = MapController();
     MapVM.determinePosition().then((result) => {
           if (result != null) {MapVM.mapController.move(result, 14.0)}
         });
     MapVM.loadMarkers();
-    MapVM.loadingController.stream.listen((value) {
-      setState(() {
-        MapVM.isLoading = value;
-      });
-    });
   }
 
-  @override
+  /* @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     MapVM.pharmaAcceptController.stream.listen((event) {
@@ -51,19 +40,17 @@ class _MapViewState extends State<MapView> {
         MapVM.showPharmaSheet(context);
       }
     });
-  }
+  } */
 
   @override
   void dispose() {
     super.dispose();
     MapVM.mapController.dispose();
-    MapVM.loadingController.close();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: MapVM.scaffoldMessengerKey,
       body: SafeArea(
         child: Stack(
           children: [
@@ -117,17 +104,10 @@ class _MapViewState extends State<MapView> {
               alignment: Alignment.topCenter,
               child: MySearchBar(),
             ),
-            if (MapVM.isLoading)
-              Container(
-                color: Colors.black.withOpacity(0.25),
-                child: const Center(
-                  child: MyLoadingIndicator(type: 2),
-                ),
-              ),
           ],
         ),
       ),
-      floatingActionButton: MapVM.movedPosition && !MapVM.isLoading
+      floatingActionButton: MapVM.movedPosition
           ? FloatingActionButton(
               onPressed: () {
                 MapVM.recenter();
