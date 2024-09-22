@@ -42,6 +42,8 @@ class _CameraViewState extends State<CameraView> {
         CameraVM.isLoading = value;
       });
     });
+
+    /* CameraVM.currentUser = context.read<UserProvider>().currentUser; */
   }
 
   @override

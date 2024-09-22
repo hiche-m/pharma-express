@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:code/Components/loading_indicator.dart';
 import 'package:code/Components/search_bar.dart';
+import 'package:code/Models/pharmacy_object.dart';
 import 'package:code/Utils/parameters.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/map_view_model.dart';
@@ -30,14 +33,22 @@ class _MapViewState extends State<MapView> {
         });
     MapVM.loadMarkers();
     MapVM.loadingController.stream.listen((value) {
-      if (value) {
-        setState(() {
-          MapVM.isLoading = value;
-        });
-      } else {
-        setState(() {
-          MapVM.isLoading = value;
-        });
+      setState(() {
+        MapVM.isLoading = value;
+      });
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MapVM.pharmaAcceptController.stream.listen((event) {
+      setState(() {
+        MapVM.pharmaAcceptList.add(PharmacyObj.fromMap(event));
+      });
+      log(MapVM.pharmaAcceptList.toString());
+      if (MapVM.pharmaAcceptList.length == 1) {
+        MapVM.showPharmaSheet(context);
       }
     });
   }
@@ -52,6 +63,7 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: MapVM.scaffoldMessengerKey,
       body: SafeArea(
         child: Stack(
           children: [

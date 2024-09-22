@@ -19,4 +19,6 @@ class Params {
   static const String mapboxStyleId = "cm0o2il8f00fn01pmg8n72uwt";
 
   static const myLocation = LatLng(0.0, 0.0);
+
+  static const int pharmaCheckAttemps = 5;
 }

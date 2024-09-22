@@ -59,7 +59,11 @@ class HttpRequests {
   // Perscription Search
 
   static Future sendPerscriptionRequest(
-      Map<String, String> formData, File perscription) async {
+      Map<String, String> formData, File? perscription) async {
+    if (perscription == null) {
+      return 'File is null!';
+    }
+
     try {
       final request = http.MultipartRequest(
           'POST', Uri.parse('http://$host:$port/api/uploadPrescription'));
@@ -88,5 +92,21 @@ class HttpRequests {
     }
 
     return 'An error has occured while trying send the perscription, please try again in a moment.';
+  }
+
+  static Future checkAccepts(String uid, String perscriptionId) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://$host:$port/api/getWhoAccept'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({"idClient": uid, "idprescription": perscriptionId}),
+      );
+      return jsonDecode(response.body);
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
   }
 }

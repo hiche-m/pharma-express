@@ -63,7 +63,7 @@ class CapturePrompt extends StatelessWidget {
                         Navigator.of(context).pop();
                         HomeVM.pageIndex = 0;
                         HomeVM.animateToPage(0, 1);
-                        MapVM.loadAcceptedLocations();
+                        MapVM.loadAcceptedLocations(CameraVM.capturedImage!);
                       },
                       child: CircleAvatar(
                         radius: 55.r,

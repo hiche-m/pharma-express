@@ -4,7 +4,7 @@ import 'package:code/Models/transaction_object.dart';
 
 class FakeData {
   static Map userInfo = {
-    "uid": "QSD5qs65zsxdcsq",
+    "uid": "4",
     "firstName": "FirstName",
     "lastName": "LastName",
     "gender": "Male",

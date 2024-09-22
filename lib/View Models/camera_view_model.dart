@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:code/Components/capture_prompt.dart';
 import 'package:camera/camera.dart';
+import 'package:code/Models/user_object.dart';
 import 'package:code/Services/http_requests.dart';
-import 'package:code/Utils/parameters.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart';
 
 class CameraVM {
   /// When this is true, the screen is still loading
@@ -34,6 +37,8 @@ class CameraVM {
 
   static StreamController<bool> loadingController =
       StreamController<bool>.broadcast();
+
+  static UserObj? currentUser;
 
   /// Function to reset all parameters to their initial value
   static void dispose() {
@@ -116,33 +121,35 @@ class CameraVM {
   }
 
   /// Send perscription picture to backend
-  static Future<String?> sendPicture() async {
+  static Future sendPicture(File perscription) async {
     /* if(!loadingController.isClosed){
       loadingController.add(true);
     } */
-    if (capturedImage != null) {
-      log("Sending Request...");
-      var result = await HttpRequests.sendPerscriptionRequest({
-        "id": '4',
-        "latitude": '${Params.myLocation.latitude}',
-        "longitude": '${Params.myLocation.longitude}',
-      }, capturedImage!);
-      log("Response available!");
+    log("Sending Request...");
+    Position currentPosition = await Geolocator.getCurrentPosition();
+    log("Location: ${currentPosition.latitude} ${currentPosition.longitude}");
+    log("$perscription");
+    var result = await HttpRequests.sendPerscriptionRequest({
+      "id": '4',
+      "latitude": '${currentPosition.latitude}',
+      "longitude": '${currentPosition.longitude}',
+    }, perscription);
+    log("Response available!");
 
-      if (result is String) {
-        log(result.toString());
-        log("Result is String");
-      } else {
-        log(result.body.toString());
-        log("Result is JSON");
-      }
-    } else {
-      log("Invalid image!");
+    if (result is String) {
+      log(result.toString());
+      log("Result is String");
+      return null;
     }
-
-    /* if(!loadingController.isClosed){
-      loadingController.add(false);
-    } */
-    return null;
+    Response? response;
+    try {
+      response = result;
+      log(response!.body);
+    } catch (e) {
+      log('Error: Response is neither [String] nor [Reponse]!');
+      return null;
+    }
+    Map map = jsonDecode(response.body);
+    return map["Idprescription"];
   }
 }
