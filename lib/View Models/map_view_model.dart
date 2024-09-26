@@ -106,8 +106,8 @@ class MapVM {
           ));
           break;
         }
-        Map accepted =
-            await HttpRequests.checkAccepts('4', '16' /* "$idPerscription" */);
+        Map accepted = await HttpRequests.checkAccepts(
+            FakeData.userInfo["uid"].toString(), idPerscription.toString());
         if (accepted["data"] != null) {
           context
               .read<RequestProvider>()

@@ -55,49 +55,52 @@ class _MapViewState extends State<MapView> {
         child: Stack(
           children: [
             !widget.devMode
-                ? FlutterMap(
-                    mapController: MapVM.mapController,
-                    options: MapOptions(
-                      minZoom: 5,
-                      maxZoom: 17,
-                      initialZoom: 15,
-                      initialCenter: MapVM.currentLocation,
-                      onPositionChanged: (position, hasGesture) {
-                        if (!MapVM.movedPosition &&
-                            position.center != MapVM.currentLocation) {
-                          setState(() {
-                            MapVM.movedPosition = true;
-                          });
-                        }
-                        if (MapVM.movedPosition &&
-                            position.center == MapVM.currentLocation) {
-                          setState(() {
-                            MapVM.movedPosition = false;
-                          });
-                        }
-                      },
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate: Params.mapboxUrlTemplate,
-                        additionalOptions: const {
-                          'mapStyleId': Params.mapboxStyleId,
-                          'accessToken': Params.mapboxAcessToken,
+                ? Hero(
+                    tag: "itinerary_tag",
+                    child: FlutterMap(
+                      mapController: MapVM.mapController,
+                      options: MapOptions(
+                        minZoom: 5,
+                        maxZoom: 17,
+                        initialZoom: 15,
+                        initialCenter: MapVM.currentLocation,
+                        onPositionChanged: (position, hasGesture) {
+                          if (!MapVM.movedPosition &&
+                              position.center != MapVM.currentLocation) {
+                            setState(() {
+                              MapVM.movedPosition = true;
+                            });
+                          }
+                          if (MapVM.movedPosition &&
+                              position.center == MapVM.currentLocation) {
+                            setState(() {
+                              MapVM.movedPosition = false;
+                            });
+                          }
                         },
                       ),
-                      MarkerLayer(
-                          markers: MapVM.markers +
-                              [
-                                Marker(
-                                  point: MapVM.currentLocation,
-                                  child: FaIcon(
-                                    FontAwesomeIcons.locationCrosshairs,
-                                    size: 25.r,
-                                    color: Palette.mainColor,
-                                  ),
-                                )
-                              ]),
-                    ],
+                      children: [
+                        TileLayer(
+                          urlTemplate: Params.mapboxUrlTemplate,
+                          additionalOptions: const {
+                            'mapStyleId': Params.mapboxStyleId,
+                            'accessToken': Params.mapboxAcessToken,
+                          },
+                        ),
+                        MarkerLayer(
+                            markers: MapVM.markers +
+                                [
+                                  Marker(
+                                    point: MapVM.currentLocation,
+                                    child: FaIcon(
+                                      FontAwesomeIcons.locationCrosshairs,
+                                      size: 25.r,
+                                      color: Palette.mainColor,
+                                    ),
+                                  )
+                                ]),
+                      ],
+                    ),
                   )
                 : const Placeholder(),
             const Align(

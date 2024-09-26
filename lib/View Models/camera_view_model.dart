@@ -5,6 +5,7 @@ import 'package:code/Components/capture_prompt.dart';
 import 'package:camera/camera.dart';
 import 'package:code/Models/user_object.dart';
 import 'package:code/Services/http_requests.dart';
+import 'package:code/Utils/fake_data.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
@@ -130,7 +131,7 @@ class CameraVM {
     log("Location: ${currentPosition.latitude} ${currentPosition.longitude}");
     log("$perscription");
     var result = await HttpRequests.sendPerscriptionRequest({
-      "id": '4',
+      "id": FakeData.userInfo["uid"].toString(),
       "latitude": '${currentPosition.latitude}',
       "longitude": '${currentPosition.longitude}',
     }, perscription);

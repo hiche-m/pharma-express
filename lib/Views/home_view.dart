@@ -4,6 +4,9 @@ import 'package:code/Models/pharmacy_object.dart';
 import 'package:code/Provider/request_provider.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/home_view_model.dart';
+import 'package:code/View%20Models/itinerary_view_model.dart';
+import 'package:code/View%20Models/map_view_model.dart';
+import 'package:code/Views/itinerary_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +43,7 @@ class _HomeState extends State<Home> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   showModalBottomSheet(
                     context: context,
-                    builder: (BuildContext context) {
+                    builder: (BuildContext modalContext) {
                       return Column(
                         children: [
                           Padding(
@@ -91,15 +94,30 @@ class _HomeState extends State<Home> {
                               ),
                               onTap: () {
                                 log("Picked: ${pharma.label}");
-                                Navigator.pop(context);
+                                requestNotifier.setPharmacy(pharma);
+                                Navigator.pop(modalContext);
                               },
                             ),
                         ],
                       );
                     },
-                  ).whenComplete(() {
+                  ).whenComplete(() async {
                     requestNotifier.clearPharmaList();
-                    pharmas = [];
+                    await ItineraryVM.getItinerary(context,
+                        start: MapVM.currentLocation,
+                        destination:
+                            requestNotifier.selectedPharmacy!.position);
+                    if (requestNotifier.selectedPharmacy != null &&
+                        requestNotifier.getItinerary != null) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ItineraryView(
+                            itinerary: requestNotifier.getItinerary!,
+                          ),
+                        ),
+                      );
+                      log(requestNotifier.getItinerary!.stops.toString());
+                    }
                   });
                 });
               }

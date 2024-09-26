@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:code/Utils/parameters.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 
+import 'package:latlong2/latlong.dart';
+
 class HttpRequests {
-  static const String host = '192.168.1.102';
-  static const int port = 3000;
+  static const String host = '192.168.245.12';
+  static const int port = 3050;
 
   // Authentication
 
@@ -107,6 +110,26 @@ class HttpRequests {
     } catch (e) {
       log(e.toString());
       return null;
+    }
+  }
+
+  static Future getRoutePoints(
+      LatLng start, LatLng destination, int typeIndex) async {
+    if (typeIndex > 3 || typeIndex < 0) {
+      return "Error: [typeIndex] must be between 0 and 3.\n\n0: 'driving-traffic'\n1: 'driving'\n2: 'walking'\n3: 'cycling'\n";
+    }
+    const List<String> types = [
+      'driving-traffic',
+      'driving',
+      'walking',
+      'cycling',
+    ];
+    try {
+      final response = await http.get(Uri.parse(
+          'https://api.mapbox.com/directions/v5/mapbox/${types[typeIndex]}/${start.longitude}%2C${start.latitude}%3B${destination.longitude}%2C${destination.latitude}?alternatives=false&geometries=polyline&language=en&overview=simplified&steps=true&access_token=${Params.mapboxAcessToken}'));
+      return jsonDecode(response.body);
+    } catch (e) {
+      return e.toString();
     }
   }
 }

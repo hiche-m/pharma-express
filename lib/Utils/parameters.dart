@@ -14,11 +14,11 @@ class Params {
       "https://api.mapbox.com/styles/v1/hich10/{mapStyleId}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}";
 
   static const String mapboxAcessToken =
-      "pk.eyJ1IjoiaGljaDEwIiwiYSI6ImNtMDg4ZzJwOTFpdzUycnF6ZmlseDl3YXEifQ.aWhY8LcAOx5-2m4B9Xfdyw";
+      "sk.eyJ1IjoiaGljaDEwIiwiYSI6ImNtMWYwOWMzaTJvdWUybnNjNWd1NzNraDQifQ.FMZYcwW1bl6nNYLD3Tze0A";
 
   static const String mapboxStyleId = "cm0o2il8f00fn01pmg8n72uwt";
 
   static const myLocation = LatLng(0.0, 0.0);
 
-  static const int pharmaCheckAttemps = 5;
+  static const int pharmaCheckAttemps = 20;
 }
