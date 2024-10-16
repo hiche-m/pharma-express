@@ -95,7 +95,8 @@ class MapVM {
       BuildContext context, File perscription) async {
     context.read<RequestProvider>().setLoading(true);
 
-    var idPerscription = await CameraVM.sendPicture(perscription);
+    String idPerscription =
+        (await CameraVM.sendPicture(perscription)).toString();
 
     try {
       for (int i = 0; i <= Params.pharmaCheckAttemps; i++) {
@@ -107,11 +108,11 @@ class MapVM {
           break;
         }
         Map accepted = await HttpRequests.checkAccepts(
-            FakeData.userInfo["uid"].toString(), idPerscription.toString());
-        if (accepted["data"] != null) {
-          context
-              .read<RequestProvider>()
-              .addPharma(PharmacyObj.fromMap(accepted["data"][0]));
+            FakeData.userInfo["uid"].toString(), idPerscription);
+        context.read<RequestProvider>().clearPharmaList();
+        if (accepted["data"] != null && accepted["data"].isNotEmpty) {
+          context.read<RequestProvider>().addPharma(
+              PharmacyObj.fromMap(accepted["data"][0]), idPerscription);
 
           break;
         }

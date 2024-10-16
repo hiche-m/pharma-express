@@ -6,6 +6,9 @@ class RequestProvider extends ChangeNotifier {
   List<PharmacyObj> _pharmaAcceptList = [];
   List<PharmacyObj> get pharmaAcceptList => _pharmaAcceptList;
 
+  String? _perscriptionId;
+  String? get perscriptionId => _perscriptionId;
+
   PharmacyObj? _selectedPharmacy;
   PharmacyObj? get selectedPharmacy => _selectedPharmacy;
 
@@ -31,7 +34,8 @@ class RequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addPharma(PharmacyObj pharma) {
+  void addPharma(PharmacyObj pharma, String pid) {
+    _perscriptionId ??= pid;
     _pharmaAcceptList.add(pharma);
     _selectedPharmacy = null;
     notifyListeners();
@@ -44,6 +48,7 @@ class RequestProvider extends ChangeNotifier {
 
   void clearItinerary() {
     _selectedItinerary = null;
+    _perscriptionId = null;
     notifyListeners();
   }
 }

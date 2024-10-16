@@ -38,8 +38,7 @@ class UserProvider extends ChangeNotifier {
     } else {
       try {
         final response = await http.get(
-          Uri.parse(
-              '${HttpRequests.host}:${HttpRequests.port}/api/confirmation/:$userToken'),
+          Uri.parse('${HttpRequests.host}/api/confirmation/:$userToken'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

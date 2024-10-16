@@ -2,6 +2,8 @@ import 'package:code/Components/loading_indicator.dart';
 import 'package:code/Components/navigation_bar.dart';
 import 'package:code/Models/pharmacy_object.dart';
 import 'package:code/Provider/request_provider.dart';
+import 'package:code/Services/http_requests.dart';
+import 'package:code/Utils/fake_data.dart';
 import 'package:code/Utils/styling.dart';
 import 'package:code/View%20Models/home_view_model.dart';
 import 'package:code/View%20Models/itinerary_view_model.dart';
@@ -94,7 +96,9 @@ class _HomeState extends State<Home> {
                               ),
                               onTap: () {
                                 log("Picked: ${pharma.label}");
-                                requestNotifier.setPharmacy(pharma);
+                                requestNotifier.setPharmacy(
+                                  pharma,
+                                );
                                 Navigator.pop(modalContext);
                               },
                             ),
@@ -102,21 +106,39 @@ class _HomeState extends State<Home> {
                       );
                     },
                   ).whenComplete(() async {
+                    String perscriptionId =
+                        requestNotifier.perscriptionId ?? "";
+                    /* try {
+                      log("Delete perscription: ");
+                      var reponse = await HttpRequests.deletePerscription(
+                          FakeData.userInfo["uid"].toString(), perscriptionId);
+                      log(reponse.toString());
+                    } catch (e) {
+                      log("Somethings wrong with the perscription id.");
+                    } */
                     requestNotifier.clearPharmaList();
-                    await ItineraryVM.getItinerary(context,
+                    if (requestNotifier.selectedPharmacy != null) {
+                      log("ItineraryVM.getItinerary: ");
+                      var response = await ItineraryVM.getItinerary(
+                        context,
                         start: MapVM.currentLocation,
-                        destination:
-                            requestNotifier.selectedPharmacy!.position);
-                    if (requestNotifier.selectedPharmacy != null &&
-                        requestNotifier.getItinerary != null) {
+                        pharma: requestNotifier.selectedPharmacy!,
+                        perscriptionId: perscriptionId,
+                      );
+                      log(response.toString());
+                    }
+
+                    if (requestNotifier.getItinerary != null) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => ItineraryView(
                             itinerary: requestNotifier.getItinerary!,
+                            perscriptionId: perscriptionId,
+                            pharmaId:
+                                requestNotifier.selectedPharmacy!.pharmaId,
                           ),
                         ),
                       );
-                      log(requestNotifier.getItinerary!.stops.toString());
                     }
                   });
                 });

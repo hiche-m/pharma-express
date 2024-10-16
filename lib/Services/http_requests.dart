@@ -3,19 +3,17 @@ import 'dart:developer';
 import 'package:code/Utils/parameters.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
-
 import 'package:latlong2/latlong.dart';
 
 class HttpRequests {
-  static const String host = '192.168.245.12';
-  static const int port = 3050;
+  static const String host = 'https://pharma-back.onrender.com';
 
   // Authentication
 
   static Future userLogin(String id, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('http://$host:$port/api/login/v1'),
+        Uri.parse('$host/api/login/v1'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -39,7 +37,7 @@ class HttpRequests {
   static Future<String?> userSignUp(Map<String, dynamic> formData) async {
     try {
       final response = await http.post(
-        Uri.parse('$host:$port/api/signup/v1'),
+        Uri.parse('$host/api/signup/v1'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -69,7 +67,7 @@ class HttpRequests {
 
     try {
       final request = http.MultipartRequest(
-          'POST', Uri.parse('http://$host:$port/api/uploadPrescription'));
+          'POST', Uri.parse('$host/api/uploadPrescription'));
 
       request.headers.addAll(<String, String>{
         'Content-Type': 'multipart/form-data',
@@ -97,14 +95,76 @@ class HttpRequests {
     return 'An error has occured while trying send the perscription, please try again in a moment.';
   }
 
-  static Future checkAccepts(String uid, String perscriptionId) async {
+  static Future deletePerscription(String uid, String perscriptionId) async {
     try {
-      final response = await http.post(
-        Uri.parse('http://$host:$port/api/getWhoAccept'),
+      final response = await http.delete(
+        Uri.parse('$host/api/deletePrescription/$perscriptionId/$uid'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode({"idClient": uid, "idprescription": perscriptionId}),
+      );
+      log(response.toString());
+      return jsonDecode(response.body);
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  static Future checkAccepts(String uid, String perscriptionId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$host/api/getWhoAccept/$uid/$perscriptionId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      return jsonDecode(response.body);
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  static Future initiateRoute(String pharmaId, String perscriptionId) async {
+    log("pharmaId: " + pharmaId.toString());
+    log("perscriptionId: " + perscriptionId.toString());
+    try {
+      final response = await http.get(
+        Uri.parse('$host/api/Commingcheck/$pharmaId/$perscriptionId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      return jsonDecode(response.body);
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  static Future cancelRoute(String pharmaId, String perscriptionId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$host/api/cancel_Commingcheck/$pharmaId/$perscriptionId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      return jsonDecode(response.body);
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  static Future getPosiologies(String uid, String perscriptionId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$host/api/posiologies/$uid/$perscriptionId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
       );
       return jsonDecode(response.body);
     } catch (e) {

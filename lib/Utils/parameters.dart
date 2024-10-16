@@ -20,5 +20,5 @@ class Params {
 
   static const myLocation = LatLng(0.0, 0.0);
 
-  static const int pharmaCheckAttemps = 20;
+  static const int pharmaCheckAttemps = 30;
 }
